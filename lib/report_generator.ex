@@ -3,7 +3,10 @@ defmodule ReportGenerator do
   def build(filename) do
     "reports/#{filename}"
     |> File.stream!()
-    |> Enum.map(fn line -> parse_line(line) end)
+    |> Enum.reduce(%{}, fn line, report ->
+      [id, _food_name, price] = parse_line(line)
+      Map.put(report, id, price)
+    end)
   end
 
 
